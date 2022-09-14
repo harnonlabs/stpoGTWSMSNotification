@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Send Webinar SMS Notification">
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12" padding="around-small">
+                    <lightning-input class="inp" name="webinarID" label="Webinar ID" required> </lightning-input>
+                    <lightning-textarea  class="inp" name="message" label="Message" required> </lightning-textarea>
+            </lightning-layout-item>
+            <lightning-layout-item size="8" padding="around-small">
+                    <lightning-button label="Send Notification" disabled={disabled} onclick={sendNotification} variant="brand"></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>
