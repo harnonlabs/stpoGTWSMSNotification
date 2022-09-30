@@ -58,7 +58,7 @@ export default class StpoGTWSMSNotification extends LightningElement {
         }
     }
 
-    async readWebinarRegistrants(webinarId, accesstoken) {
+    async readWebinarRegistrants(webinarId, accesstoken ) {
         let data
         try {
             data = await this.getData("https://api.getgo.com/G2W/rest/v2/organizers/300000000000375460/webinars/" + webinarId + "/registrants", accesstoken)
