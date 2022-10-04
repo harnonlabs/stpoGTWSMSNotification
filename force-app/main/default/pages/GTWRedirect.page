@@ -1,0 +1,23 @@
+<apex:page showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false">
+
+    <head>
+        <title>OAuth 2.0 Redirect</title>
+    </head>
+    <script>
+    
+    window.onload = onLoad;
+    
+    function onLoad() {
+        const code = getUrlParamValue(window.location.href, 'code');
+        location.href = '/lightning/n/Send_Webinar_SMS_reminder?c__code=' + code;
+    }
+
+    function getUrlParamValue(url, key) {
+        return new URL(url).searchParams.get(key);
+    }
+
+    </script>
+    <body>
+        Redirecting...
+    </body>
+</apex:page>

@@ -1,13 +1,37 @@
 <template>
     <lightning-card title="Send Webinar SMS Notification">
         <lightning-layout multiple-rows="true">
+
+            <lightning-layout-item size="12" padding="around-small">
+                <b>Instructions</b>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" padding="around-small">
+                <ol>
+                    <li>Run Phone Validation script 1 or 2 hours before the Webinar</li>
+                    <li>Click on <b>Get a new Code</b> link to get a new authorization code. A new tab will be open. <b>IMPORTANT: Keep working on the new tab and dismiss the one before, you will recognize the new tab because it has a CODE url parameter</b></li>
+                    <li>Click on <b>Get a new Token</b> button to issue a new token</li>
+                    <li>Add the Webinar Id and your message. The Webinar ID must be taken from GTW webinar landing page URL (add a space at the end of the message to separate the GTW link)</li>
+                    <li>Click on <b>Send SMS</b> button</li>
+                    <li>You are done!</li>
+                </ol>
+            </lightning-layout-item>
+            
             <lightning-layout-item size="12" padding="around-small">
                     <lightning-input class="inp" name="webinarID" label="Webinar ID" required> </lightning-input>
                     <lightning-textarea  class="inp" name="message" label="Message" required> </lightning-textarea>
             </lightning-layout-item>
+            
             <lightning-layout-item size="8" padding="around-small">
-                    <lightning-button label="Send Notification" disabled={disabled} onclick={sendNotification} variant="brand"></lightning-button>
+                <lightning-formatted-url label="Get a new code!" value="api.getgo.com/oauth/v2/authorize?client_id=2eea7a09-500e-4278-994b-8ab23e2c84a8&response_type=code&redirect_uri=https://insurmark--c.visualforce.com/apex/GTWRedirect" ></lightning-formatted-url>
             </lightning-layout-item>
+            <lightning-layout-item size="8" padding="around-small">
+                <lightning-button label="Get a new Token" onclick={gtwAuthenticate} variant="brand"></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item size="8" padding="around-small">
+                <lightning-button label="Send SMS" disabled={disabled} onclick={sendNotification} variant="brand"></lightning-button>
+            </lightning-layout-item>
+
         </lightning-layout>
     </lightning-card>
 </template>

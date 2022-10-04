@@ -22,6 +22,46 @@ export default class StpoGTWSMSNotification extends LightningElement {
     @track message
     @track totalOfSMSSent = 0
     disabled = false;
+    token = ""
+
+    parameters = {};
+
+    connectedCallback() {
+    //    const urlParams = new URLSearchParams(location.search);
+    //    const code = urlParams.get('c__code')
+    //    if(code) {
+    //     this.postData(`https://authentication.logmeininc.com/oauth/token?grant_type=authorization_code&code=${code}&redirect_uri=https://insurmark--c.visualforce.com/apex/GTWRedirect`)
+    //         .then(data => {
+    //             if(data?.access_token) {
+    //                 console.log("accesstoken", data.access_token)
+    //                 this.token = data.access_token
+    //             } else {
+    //                 this.disabled = false
+    //             }
+    //           })
+    //         .catch(error => {
+    //             console.log("TOKEN ERROR", error)
+    //         });
+    //    }
+       
+    }
+
+    async gtwAuthenticate() {
+       const urlParams = new URLSearchParams(location.search);
+       const code = urlParams.get('c__code')
+       if(code) {
+        this.postData(`https://authentication.logmeininc.com/oauth/token?grant_type=authorization_code&code=${code}&redirect_uri=https://insurmark--c.visualforce.com/apex/GTWRedirect`)
+            .then(data => {
+                if(data?.access_token) {
+                    console.log("accesstoken", data.access_token)
+                    this.token = data.access_token
+                }
+              })
+            .catch(error => {
+                console.log("TOKEN ERROR", error)
+            });
+       }
+    }
 
     sendNotification(){
         /** validate inputs */
@@ -42,19 +82,25 @@ export default class StpoGTWSMSNotification extends LightningElement {
                     this.message=element.value;
             },this)
             /** Call GTW API and get access token */
-            const latestToken = "eyJraWQiOiJvYXV0aHYyLmxtaS5jb20uMDIxOSIsImFsZyI6IlJTNTEyIn0.eyJzYyI6ImNvbGxhYjoiLCJzdWIiOiIzMDAwMDAwMDAwMDAzNzU0NjAiLCJhdWQiOiIyZWVhN2EwOS01MDBlLTQyNzgtOTk0Yi04YWIyM2UyYzg0YTgiLCJvZ24iOiJwd2QiLCJ0eXAiOiJyIiwiZXhwIjoxNjYxNTQwNTgyLCJpYXQiOjE2NTg5NDg1ODIsImp0aSI6ImEzOWQ5NTEwLTU1NGYtNGNhYS1hNzViLTZhNjRmZGE0YzA5MiJ9.J1tqWPDp8UvyqUj7Lus6HiYM8omos55oc3SSSGotTWmvrMCNQEvVB-XurPHeuCV28Ea5UfoO8kzH8re1VKKTRU9AIILGyhS3d-RsGlaKFaVTt1y4kw2EqdGGy0b2M0RITjJxCRpDFTC9TvelTZUHATzP6_Fc-ysbI0QV7JK86NollhRY5MGY7VFzUJg6Dn_wzLaFoayuXA7BLcb9SU7oLfyzMjDNfTF3o6mdx6x7zUvmN8Vn1JZRo2vsltYI--3K1bU-CS975JW2_uP02fGjXbrzVgA4J_8HmR1-cgmE-fj3IJ3PlS6TngzDTlx-9g616C8SBNMJOS-lcqqcAGgDXw"
-            this.postData(`https://api.getgo.com/oauth/v2/token?grant_type=refresh_token&refresh_token=${latestToken}`)
-            .then(data => {
-                if(data?.access_token) {
-                    /** Call GTW API and read webinar registrants */
-                    this.readWebinarRegistrants(this.webinarId, data.access_token)
-                } else {
-                    this.disabled = false
-                }
-              })
-            .catch(error => {
-                console.log("TOKEN ERROR", error)
-            });
+            if(this.token) {
+                /** Call GTW API and read webinar registrants */
+                this.readWebinarRegistrants(this.webinarId, this.token)
+            } else {
+                this.disabled = false
+            }
+            // const latestToken = "eyJraWQiOiJvYXV0aHYyLmxtaS5jb20uMDIxOSIsImFsZyI6IlJTNTEyIn0.eyJzYyI6ImNvbGxhYjoiLCJzdWIiOiIzMDAwMDAwMDAwMDAzNzU0NjAiLCJhdWQiOiIyZWVhN2EwOS01MDBlLTQyNzgtOTk0Yi04YWIyM2UyYzg0YTgiLCJvZ24iOiJwd2QiLCJ0eXAiOiJyIiwiZXhwIjoxNjYxNTQwNTgyLCJpYXQiOjE2NTg5NDg1ODIsImp0aSI6ImEzOWQ5NTEwLTU1NGYtNGNhYS1hNzViLTZhNjRmZGE0YzA5MiJ9.J1tqWPDp8UvyqUj7Lus6HiYM8omos55oc3SSSGotTWmvrMCNQEvVB-XurPHeuCV28Ea5UfoO8kzH8re1VKKTRU9AIILGyhS3d-RsGlaKFaVTt1y4kw2EqdGGy0b2M0RITjJxCRpDFTC9TvelTZUHATzP6_Fc-ysbI0QV7JK86NollhRY5MGY7VFzUJg6Dn_wzLaFoayuXA7BLcb9SU7oLfyzMjDNfTF3o6mdx6x7zUvmN8Vn1JZRo2vsltYI--3K1bU-CS975JW2_uP02fGjXbrzVgA4J_8HmR1-cgmE-fj3IJ3PlS6TngzDTlx-9g616C8SBNMJOS-lcqqcAGgDXw"
+            // this.postData(`https://api.getgo.com/oauth/v2/token?grant_type=refresh_token&refresh_token=${this.token}`)
+            // .then(data => {
+            //     if(this.token) {
+            //         /** Call GTW API and read webinar registrants */
+            //         this.readWebinarRegistrants(this.webinarId, data.access_token)
+            //     } else {
+            //         this.disabled = false
+            //     }
+            //   })
+            // .catch(error => {
+            //     console.log("TOKEN ERROR", error)
+            // });
         }
     }
 
