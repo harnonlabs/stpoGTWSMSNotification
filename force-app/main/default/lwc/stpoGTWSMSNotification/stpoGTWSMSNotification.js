@@ -251,7 +251,7 @@ export default class StpoGTWSMSNotification extends LightningElement {
         cache: 'no-cache',
         credentials: 'same-origin', // include, *same-origin, omit
         headers: {
-            'Authorization':'Basic MmVlYTdhMDktNTAwZS00Mjc4LTk5NGItOGFiMjNlMmM4NGE4Ok5hamxqcTNoTjc4aVk5MEVJYTRxU3Ixdg==',
+            'Authorization':'Basic [REDACTED]',
             'Content-Type': 'application/x-www-form-urlencoded',
             // 'Accept':'application/json'
         },
